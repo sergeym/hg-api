@@ -1,0 +1,23 @@
+<html>
+<title>Login in...</title>
+<script>
+    var authResponse = { },
+        hash = window.location.hash.replace('#', '').split('&');
+    for (var x = 0; x < hash.length; x++) {
+        var itemArray = hash[x].split('=');
+        authResponse[itemArray[0]] = itemArray[1];
+    }
+
+    if (authResponse.state) {
+        window.addEventListener("message", function(ev) {
+            if (ev.data == authResponse.state) {
+                window.removeEventListener('message', this);
+                ev.source.postMessage({status:'connected', authResponse:authResponse}, ev.origin);
+                window.close();
+            }
+        })
+
+    }
+</script>
+<body></body>
+</html>

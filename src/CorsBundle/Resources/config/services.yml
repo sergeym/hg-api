@@ -1,0 +1,14 @@
+parameters:
+    nelmio_cors.cors_listener.class: CorsBundle\EventListener\CorsListener
+
+services:
+    nelmio_cors.cors_listener:
+        class: "%nelmio_cors.cors_listener.class%"
+        arguments:
+            - "@event_dispatcher"
+            - "@nelmio_cors.options_resolver"
+        calls:
+            - ["setCorsManager", ["@api.security.cors.manager"]]
+            - ["setLogger", ["@logger"]]
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 10000 }

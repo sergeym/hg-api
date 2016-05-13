@@ -1,0 +1,44 @@
+# To get started with security, check out the documentation:
+# http://symfony.com/doc/current/book/security.html
+security:
+
+    # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
+    providers:
+        api_bundle:
+            id: api.user_manager
+
+    encoders:
+        ApiBundle\Entity\User:
+            algorithm: md5
+            iterations: 1
+            encode_as_base64: false
+
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+
+        oauth_authorize:
+            pattern: ^/oauth/v2/auth
+            form_login:
+                provider: api_bundle
+                check_path: api_user_security_check
+                login_path: api_user_security_login
+                csrf_token_generator: security.csrf.token_manager
+            anonymous: true
+
+        oauth_token:
+            pattern: ^/oauth/v2/token
+            security: false
+
+        api:
+            pattern:    ^/api
+            fos_oauth:  true
+            stateless:  true
+            anonymous:  false # can be omitted as its default value
+
+    access_control:
+        - { path: ^/api, roles: [ IS_AUTHENTICATED_FULLY ] }
+        - { path: ^/oauth/v2/auth_login$, role: IS_AUTHENTICATED_ANONYMOUSLY }

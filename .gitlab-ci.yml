@@ -1,0 +1,14 @@
+before_script:
+  - date
+  - wget -q http://deployer.org/deployer.phar
+deploy-test:
+  type: deploy
+  script:
+    - /usr/bin/php deployer.phar deploy test $CI_BUILD_REF_NAME
+deploy-production:
+  type: deploy
+  script:
+    - /usr/bin/php deployer.phar deploy production $CI_BUILD_REF_NAME
+  only:
+    - master
+    - /^deploy\/.*$/

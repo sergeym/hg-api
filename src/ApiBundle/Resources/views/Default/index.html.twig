@@ -1,0 +1,82 @@
+{% extends "::base.html.twig" %}
+
+{% block stylesheets %}
+    {% stylesheets '@bootstrap_less' '@datatables_css' combine=true %}
+    <link href="{{ asset_url }}" type="text/css" rel="stylesheet" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <h1>Developer area</h1>
+                <p class="lead">...</p>
+                <table id="clients" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>name</th>
+                        <th>grant types</th>
+                        <th>allowed origins</th>
+                        <th>redirect urls</th>
+                    </tr>
+                </thead>
+                </table>
+            </div>
+            <div class="col-md-3">
+                <div class="h1">
+                    <span id="username"></span>
+                    <button id="login" class="btn btn-info" data-hg-login-button data-label-connected="Log Out" data-label-unknown="Log In" data-label-not_authorized="Log In">Log In</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block javascripts %}
+    {% javascripts '@jquery_js' '@bootstrap_js' '@datatables_js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script>
+        window.hgAsyncInit = function() {
+            HG.init({
+                appId: '1_nu3vdjtu7284osook440wk8w8o0g8okoc000g4s4s8skooggo'
+            });
+
+            HG.getLoginStatus(function(response) {
+                if (response.status == 'connected') {
+
+                    HG.get('profile/clients', function (apiResponse) {
+                        var data=[];
+                        for(var i in apiResponse) {
+                            data.push([
+                                apiResponse[i].id,
+                                apiResponse[i].name,
+                                apiResponse[i].allowed_grant_types.join(', '),
+                                apiResponse[i].allowed_origins.join(', '),
+                                apiResponse[i].redirect_uris.join(', ')
+                            ]);
+                        }
+
+                        $('#clients').DataTable( {
+                            data: data
+                        });
+                    });
+                }
+            });
+
+        };
+        // Load the SDK asynchronously
+        (function(d, s, id) {
+            var js, pjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "/sdk/en_US/sdk.js";
+            pjs.parentNode.insertBefore(js, pjs);
+        }(document, 'script', 'hg-js-sdk'));
+    </script>
+{% endblock %}

@@ -1,0 +1,53 @@
+assetic:
+    debug:          '%kernel.debug%'
+    use_controller: '%kernel.debug%'
+    filters:
+        cssrewrite: ~
+        closure:
+            compilation_level: SIMPLE_OPTIMIZATIONS
+            apply_to: "sdk.js$"
+        lessphp:
+            file: "%kernel.root_dir%/../vendor/oyejorge/less.php/lessc.inc.php"
+            apply_to: ".less$"
+    assets:
+        jquery_js:
+            inputs:
+                - '%kernel.root_dir%/../vendor/twbs/bootstrap/docs/assets/js/vendor/jquery.min.js'
+        datatables_js:
+            inputs:
+                - '%kernel.root_dir%/../vendor/datatables/datatables/media/js/jquery.dataTables.js'
+                - '%kernel.root_dir%/../vendor/datatables/datatables/media/js/dataTables.bootstrap.js'
+        datatables_css:
+            inputs:
+                - '%kernel.root_dir%/../vendor/datatables/datatables/media/css/dataTables.bootstrap.css'
+        bootstrap_js:
+            inputs:
+               - "%kernel.root_dir%/../vendor/twbs/bootstrap/dist/js/bootstrap.js"
+        bootstrap_less:
+            inputs:
+                - '%kernel.root_dir%/../vendor/twbs/bootstrap/less/bootstrap.less'
+            filters: [lessphp]
+        bootstrap_glyphicons_ttf:
+            inputs:
+                - "%kernel.root_dir%/../vendor/twbs/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf"
+            output: "fonts/glyphicons-halflings-regular.ttf"
+        bootstrap_glyphicons_eot:
+            inputs:
+                - "%kernel.root_dir%/../vendor/twbs/bootstrap/dist/fonts/glyphicons-halflings-regular.eot"
+            output: "fonts/glyphicons-halflings-regular.eot"
+        bootstrap_glyphicons_svg:
+            inputs:
+                - "%kernel.root_dir%/../vendor/twbs/bootstrap/dist/fonts/glyphicons-halflings-regular.svg"
+            output: "fonts/glyphicons-halflings-regular.svg"
+        bootstrap_glyphicons_woff:
+            inputs:
+                - "%kernel.root_dir%/../vendor/twbs/bootstrap/dist/fonts/glyphicons-halflings-regular.woff"
+            output: "fonts/glyphicons-halflings-regular.woff"
+        bootstrap_glyphicons_woff2:
+            inputs:
+                - "%kernel.root_dir%/../vendor/twbs/bootstrap/dist/fonts/glyphicons-halflings-regular.woff2"
+            output: "fonts/glyphicons-halflings-regular.woff2"
+        sdk_js:
+            inputs:
+                - '%kernel.root_dir%/../src/ApiBundle/Resources/public/js/en_US/sdk.js'
+            output: "sdk/en_US/sdk.js"

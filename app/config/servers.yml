@@ -1,0 +1,18 @@
+production:
+    host:          hanggliding.ru
+    user:          hanggliding
+    identity_file:
+        public_key: "~/.ssh/id_rsa.pub"
+        private_key: "~/.ssh/id_rsa"
+        password: "key-password"
+    stage:         production
+    deploy_path:   "/home/hanggliding/api.production"
+test:
+    host:          hanggliding.ru
+    user:          hanggliding
+    identity_file:
+        public_key: "~/.ssh/id_rsa.pub"
+        private_key: "~/.ssh/id_rsa"
+        password: "key-password"
+    stage:         test
+    deploy_path:   "/home/hanggliding/api.test"

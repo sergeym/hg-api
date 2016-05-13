@@ -1,0 +1,44 @@
+services:
+#    api.example:
+#        class: ApiBundle\Example
+#        arguments: ["@service_id", "plain_value", %parameter%]
+
+    api.user_manager:
+        class: ApiBundle\Doctrine\UserManager
+        public: false
+        arguments: ['@doctrine.orm.default_entity_manager', 'ApiBundle\Entity\User']
+
+    api.security.login_manager:
+        class: ApiBundle\Security\LoginManager
+        arguments: ['@security.token_storage', '@security.user_checker', '@security.authentication.session_strategy', '@service_container']
+
+    api.security.authorization_manager:
+        class: ApiBundle\Security\AuthorizationManager
+        arguments: ['@service_container']
+
+    api.security.interactive_login_listener:
+        class: ApiBundle\Security\InteractiveLoginListener
+        tags:
+            - { name: kernel.event_listener, event: security.interactive_login, method: onSecurityInteractiveLogin }
+        arguments: ['@api.user_manager']
+
+    api.security.cors.manager:
+        class: ApiBundle\Security\CorsManager
+        arguments:
+            - "@fos_oauth_server.client_manager"
+            - "@fos_oauth_server.access_token_manager.default"
+            - "@logger"
+
+    api.security.user_provider:
+        class: ApiBundle\Security\UserProvider
+        public: false
+        arguments: ['@api.user_manager']
+
+    api.oauth.authorization_listener:
+        class: ApiBundle\EventListener\AuthorizationListener
+        arguments: ['@service_container', '@api.security.authorization_manager']
+        tags:
+            - { name: kernel.event_listener, event: fos_oauth_server.pre_authorization_process, method: onPreAuthorizationProcess }
+            - { name: kernel.event_listener, event: fos_oauth_server.post_authorization_process, method: onPostAuthorizationProcess }
+            - { name: kernel.event_listener, event: kernel.response, method: onUserAuthorized }
+
