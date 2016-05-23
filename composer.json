@@ -36,7 +36,8 @@
         "friendsofsymfony/oauth-server-bundle": "^1.5",
         "datatables/datatables": "^1.10",
         "nelmio/cors-bundle": "^1.4",
-        "ide2/telegram-handler": "^2.0"
+        "ide2/telegram-handler": "^2.0",
+        "stof/doctrine-extensions-bundle": "^1.2"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

@@ -216,10 +216,40 @@ try {
                 });
             }
 
+            var apiPut = function (path, data, callback) {
+                return fetch('//'+appHost+'/api/'+path, {
+                    method: 'PUT',
+                    body: JSON.stringify(data),
+                    headers: {
+                        'Authorization': "Bearer " + auth.access_token,
+                    }
+                }).then(callback);
+            };
+
+            var apiPost = function (path, data, callback) {
+                return fetch('//'+appHost+'/api/'+path, {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: {
+                        'Authorization': "Bearer " + auth.access_token,
+                    }
+                }).then(function(response) {
+                        var data = response.json();
+                        if (response.status >= 200 && response.status < 500) {
+                            return Promise.resolve(data).then(callback);
+                        } else {
+                            return Promise.reject(new Error(response.statusText)).then(callback);
+                        }
+                    }
+                );
+            };
+
             window.HG = {
                 init: init,
                 getLoginStatus: getLoginStatus,
-                get:apiGet
+                get:apiGet,
+                put:apiPut,
+                post:apiPost
             };
 
             if (window.hgAsyncInit && !window.hgAsyncInit.hasRun) {

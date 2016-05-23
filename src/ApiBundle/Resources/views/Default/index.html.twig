@@ -18,8 +18,7 @@
                         <th>id</th>
                         <th>name</th>
                         <th>grant types</th>
-                        <th>allowed origins</th>
-                        <th>redirect urls</th>
+                        <th>updated</th>
                     </tr>
                 </thead>
                 </table>
@@ -33,42 +32,90 @@
         </div>
     </div>
 
+    <div class="modal fade" id="edit-client-modal" tabindex="-1" role="dialog" aria-labelledby="edit-client-modal-title">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="edit-client-modal-title">Edit Application</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="edit-client-form" data-action="{{ path('api_client_update', {id: 0}) }}" method="put">
+                        <div class="form-group">
+                            <label for="client-name">Name</label>
+                            <input type="text" name="name" class="form-control" id="client-name" placeholder="Client name" data-toggle="tooltip" data-placement="top" title="">
+                        </div>
+                        <div class="form-group">
+                            <label for="client-redirect-uris">Redirect URIs</label>
+                            <textarea id="client-redirect-uris" name="redirectUris" class="form-control" rows="5" placeholder="New line add new URI" data-toggle="tooltip" data-placement="top" title=""></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="client-allowed-origins">Allowed origins</label>
+                            <textarea id="client-allowed-origins" name="allowedOrigins" class="form-control" rows="5" placeholder="New line add new origin" data-toggle="tooltip" data-placement="top" title=""></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Allowed Grant Types</label>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="allowedGrantTypes[]" value="token"> Token
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="allowedGrantTypes[]" value="authorization_code"> Authorization Code
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="allowedGrantTypes[]" value="client_credentials"> Client Credentals
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="allowedGrantTypes[]" value="refresh_token"> Refresh Token
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" form="edit-client-form" data-loading-text="Saving...">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 
 
 {% block javascripts %}
-    {% javascripts '@jquery_js' '@bootstrap_js' '@datatables_js' %}
+    {% javascripts '@jquery_js' '@bootstrap_js' '@datatables_js' '@ApiBundle/Resources/public/js/controller/ClientController.js' %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
     <script>
+
+        let app = new ClientController();
+
         window.hgAsyncInit = function() {
             HG.init({
-                appId: '1_nu3vdjtu7284osook440wk8w8o0g8okoc000g4s4s8skooggo'
+                appId: '{{ api_appId }}'
             });
 
             HG.getLoginStatus(function(response) {
                 if (response.status == 'connected') {
-
-                    HG.get('profile/clients', function (apiResponse) {
-                        var data=[];
-                        for(var i in apiResponse) {
-                            data.push([
-                                apiResponse[i].id,
-                                apiResponse[i].name,
-                                apiResponse[i].allowed_grant_types.join(', '),
-                                apiResponse[i].allowed_origins.join(', '),
-                                apiResponse[i].redirect_uris.join(', ')
-                            ]);
-                        }
-
-                        $('#clients').DataTable( {
-                            data: data
-                        });
+                    HG.get('clients', function (apiResponse) {
+                        app.setClientsData(apiResponse)
                     });
                 }
             });
-
         };
         // Load the SDK asynchronously
         (function(d, s, id) {

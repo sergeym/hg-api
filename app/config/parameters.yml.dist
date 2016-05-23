@@ -19,5 +19,7 @@ parameters:
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
 
-    telegram.bot: "238396443:AAFMgpgn6xSfFfzjGDVijqd4aIag_lgK2oU"
-    telegram.chat_id: "232523422"
+    telegram.bot: "bot-id"
+    telegram.chat_id: "chat-id"
+
+    api.appId: very_secret_app_id

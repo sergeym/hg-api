@@ -1,0 +1,9 @@
+api_client_index:
+    path: /
+    methods: GET
+    defaults: { _controller: ApiBundle:Client:index }
+
+api_client_update:
+    path: /{id}
+    methods: PUT
+    defaults: { _controller: ApiBundle:Client:update }

@@ -1,0 +1,7 @@
+api_user_profile:
+    path: api/profile
+    defaults: { _controller: ApiBundle:User:profile }
+
+api_client:
+    resource: "@ApiBundle/Resources/config/routing/api/client.yml"
+    prefix:   /clients

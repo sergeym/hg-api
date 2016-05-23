@@ -2,6 +2,7 @@
 
 namespace ApiBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use JMS\Serializer\Annotation as JMS;
@@ -20,9 +21,9 @@ class User implements UserInterface
      * @JMS\Groups({"user"})
      * @ORM\Column(name="user_id", type="integer", length=11, options={"unsigned"=true})
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
@@ -30,21 +31,21 @@ class User implements UserInterface
      * @JMS\Groups({"user"})
      * @ORM\Column(name="user_login", type="string", length=30, nullable=false)
      */
-    private $login;
+    protected $login;
 
     /**
      * @var string
      *
      * @ORM\Column(name="user_password", type="string", length=50, nullable=false)
      */
-    private $password;
+    protected $password;
 
     /**
      * @var string
      *
      * @ORM\Column(name="user_mail", type="string", length=50, nullable=true)
      */
-    private $mail;
+    protected $mail;
 
     /**
      * @var float
@@ -52,35 +53,35 @@ class User implements UserInterface
      * @JMS\Groups({"user"})
      * @ORM\Column(name="user_skill", type="float", precision=9, scale=3, nullable=false, columnDefinition="FLOAT(9,3) NOT NULL")
      */
-    private $skill = '0.000';
+    protected $skill = '0.000';
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="user_date_register", type="datetime", nullable=false)
      */
-    private $dateRegister;
+    protected $dateRegister;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="user_date_activate", type="datetime", nullable=true)
      */
-    private $dateActivate;
+    protected $dateActivate;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="user_date_comment_last", type="datetime", nullable=true)
      */
-    private $dateCommentLast;
+    protected $dateCommentLast;
 
     /**
      * @var string
      *
      * @ORM\Column(name="user_ip_register", type="string", length=20, nullable=false)
      */
-    private $ipRegister;
+    protected $ipRegister;
 
     /**
      * @var float
@@ -88,28 +89,28 @@ class User implements UserInterface
      * @JMS\Groups({"user"})
      * @ORM\Column(name="user_rating", type="float", precision=9, scale=3, nullable=false)
      */
-    private $rating = '0.000';
+    protected $rating = '0.000';
 
     /**
      * @var integer
      *
      * @ORM\Column(name="user_count_vote", type="integer", nullable=false)
      */
-    private $countVote = '0';
+    protected $countVote = '0';
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="user_activate", type="boolean", nullable=false)
      */
-    private $activate = '0';
+    protected $activate = '0';
 
     /**
      * @var string
      *
      * @ORM\Column(name="user_activate_key", type="string", length=32, nullable=true)
      */
-    private $activateKey;
+    protected $activateKey;
 
     /**
      * @var string
@@ -117,7 +118,7 @@ class User implements UserInterface
      * @JMS\Groups({"user"})
      * @ORM\Column(name="user_profile_name", type="string", length=50, nullable=true)
      */
-    private $profileName;
+    protected $profileName;
 
     /**
      * @var string
@@ -125,7 +126,7 @@ class User implements UserInterface
      * @JMS\Groups({"user"})
      * @ORM\Column(name="user_profile_sex", type="string", nullable=false)
      */
-    private $profileSex = 'other';
+    protected $profileSex = 'other';
 
     /**
      * @var string
@@ -133,7 +134,7 @@ class User implements UserInterface
      * @JMS\Groups({"user"})
      * @ORM\Column(name="user_profile_country", type="string", length=30, nullable=true)
      */
-    private $profileCountry;
+    protected $profileCountry;
 
     /**
      * @var string
@@ -141,7 +142,7 @@ class User implements UserInterface
      * @JMS\Groups({"user"})
      * @ORM\Column(name="user_profile_region", type="string", length=30, nullable=true)
      */
-    private $profileRegion;
+    protected $profileRegion;
 
     /**
      * @var string
@@ -149,49 +150,49 @@ class User implements UserInterface
      * @JMS\Groups({"user"})
      * @ORM\Column(name="user_profile_city", type="string", length=30, nullable=true)
      */
-    private $profileCity;
+    protected $profileCity;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="user_profile_birthday", type="datetime", nullable=true)
      */
-    private $profileBirthday;
+    protected $profileBirthday;
 
     /**
      * @var string
      *
      * @ORM\Column(name="user_profile_site", type="string", length=200, nullable=true)
      */
-    private $profileSite;
+    protected $profileSite;
 
     /**
      * @var string
      *
      * @ORM\Column(name="user_profile_site_name", type="string", length=50, nullable=true)
      */
-    private $profileSiteName;
+    protected $profileSiteName;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="user_profile_icq", type="bigint", nullable=true)
      */
-    private $profileIcq;
+    protected $profileIcq;
 
     /**
      * @var string
      *
      * @ORM\Column(name="user_profile_about", type="text", length=65535, nullable=true)
      */
-    private $profileAbout;
+    protected $profileAbout;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="user_profile_date", type="datetime", nullable=true)
      */
-    private $profileDate;
+    protected $profileDate;
 
     /**
      * @var string
@@ -199,7 +200,7 @@ class User implements UserInterface
      * @JMS\Groups({"user"})
      * @ORM\Column(name="user_profile_avatar", type="string", length=250, nullable=true)
      */
-    private $profileAvatar;
+    protected $profileAvatar;
 
     /**
      * @var string
@@ -207,42 +208,42 @@ class User implements UserInterface
      * @JMS\Groups({"user"})
      * @ORM\Column(name="user_profile_foto", type="string", length=250, nullable=true)
      */
-    private $profileFoto;
+    protected $profileFoto;
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="user_settings_notice_new_topic", type="boolean", nullable=false)
      */
-    private $settingsNoticeNewTopic = '1';
+    protected $settingsNoticeNewTopic = '1';
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="user_settings_notice_new_comment", type="boolean", nullable=false)
      */
-    private $settingsNoticeNewComment = '1';
+    protected $settingsNoticeNewComment = '1';
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="user_settings_notice_new_talk", type="boolean", nullable=false)
      */
-    private $settingsNoticeNewTalk = '1';
+    protected $settingsNoticeNewTalk = '1';
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="user_settings_notice_reply_comment", type="boolean", nullable=false)
      */
-    private $settingsNoticeReplyComment = '1';
+    protected $settingsNoticeReplyComment = '1';
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="user_settings_notice_new_friend", type="boolean", nullable=false)
      */
-    private $settingsNoticeNewFriend = '1';
+    protected $settingsNoticeNewFriend = '1';
 
     /**
      * @var string
@@ -250,7 +251,15 @@ class User implements UserInterface
      * @JMS\Groups({"user"})
      * @ORM\Column(name="user_settings_timezone", type="string", length=6, nullable=true)
      */
-    private $settingsTimezone;
+    protected $settingsTimezone;
+
+    /**
+     * @var ArrayCollection|Client[]
+     * @JMS\Groups({"user-clients"})
+     * @JMS\Type("ArrayCollection<Client>")
+     * @ORM\ManyToMany(targetEntity="Client", mappedBy="users")
+     */
+    protected $clients;
 
     /**
      * @return int
@@ -330,6 +339,21 @@ class User implements UserInterface
     public function setLastLogin($date)
     {
         // nothing
+    }
+
+    public function getClients()
+    {
+        return $this->clients;
+    }
+
+    public function addClient(Client $client)
+    {
+        $this->clients->add($client);
+    }
+
+    public function removeClient(Client $client)
+    {
+        $this->clients->remove($client);
     }
 }
 
