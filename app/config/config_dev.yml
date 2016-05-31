@@ -13,6 +13,9 @@ web_profiler:
 
 monolog:
     handlers:
+        applog:
+            type:  error_log
+            level: debug
         main:
             type: stream
             path: "%kernel.logs_dir%/%kernel.environment%.log"

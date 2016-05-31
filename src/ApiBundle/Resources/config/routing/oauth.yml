@@ -1,0 +1,23 @@
+api_user_security_login:
+    path: /auth_login
+    defaults: { _controller: ApiBundle:Security:login }
+
+api_user_security_check:
+    path: /auth_login_check
+    defaults: { _controller: ApiBundle:Security:check }
+
+api_user_oauth_blank:
+    path: /auth_blank
+    defaults: { _controller: ApiBundle:Security:blank }
+
+api_user_oauth_receiver:
+    path: /auth_receiver
+    defaults: { _controller: ApiBundle:Security:receiver }
+
+api_user_login_status:
+    path: /auth_login_status
+    defaults: { _controller: ApiBundle:Security:loginStatus }
+
+api_user_security_logout:
+    path: /auth_logout
+    defaults: { _controller: ApiBundle:Security:logout }

@@ -12,6 +12,7 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
+    jms_serializer.camel_case_naming_strategy.class: JMS\Serializer\Naming\IdenticalPropertyNamingStrategy
 
 framework:
     #esi:             ~
@@ -42,6 +43,8 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    globals:
+        api_appId: "%api.appId%"
 
 # Doctrine Configuration
 doctrine:
@@ -66,6 +69,16 @@ doctrine:
         auto_generate_proxy_classes: "%kernel.debug%"
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
+        filters:
+            softdeleteable:
+                class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
+                enabled: true
+
+stof_doctrine_extensions:
+    orm:
+        default:
+            timestampable: true
+            softdeleteable: true
 
 doctrine_migrations:
     dir_name: "%kernel.root_dir%/DoctrineMigrations"
@@ -91,13 +104,6 @@ fos_oauth_server:
         user_provider: api.user_manager
         options:
             supported_scopes: profile xc tracking
-
-monolog:
-    handlers:
-        applog:
-            type: service
-            id: monolog_handler_telegram
-            level: ERROR
 
 services:
     monolog_handler_telegram:

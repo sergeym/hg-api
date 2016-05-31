@@ -1,3 +1,6 @@
+parameters:
+    api.index.max_per_page: 20
+
 services:
 #    api.example:
 #        class: ApiBundle\Example

@@ -2,6 +2,7 @@
 require 'recipe/symfony3.php';
 use Symfony\Component\Console\Input\InputArgument;
 
+set('dump_assets', true);
 
 argument('branch', InputArgument::OPTIONAL, 'Branch to publish.');
 
