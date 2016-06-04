@@ -14,23 +14,22 @@ try {
         }
 
         (function () {
-            var self = window;
-            var config = {};
+            var config = {
+                api: 'https://api.hanggliding.ru',
+                scope: 'profile'
+            };
             var loginStatusListeners = [];
             var loginWindow;
             var messageEmitterInterval;
             var auth = null;
-            var defaultScope = 'profile';
-            var appHost = 'api.hanggliding.ru'
-            var appSchema = document.location.protocol;
-            var appOrigin = appSchema + '//' + appHost;
-            var appAuthReturnUrl = appSchema + '//' + appHost + '/oauth/v2/auth_receiver';
+            var appAuthReturnUrl = config.api + '/oauth/v2/auth_receiver';
             var state = null;
             var stateLength = 32;
 
             var fetchLoginStatus = function (appId, scope) {
-                return fetch('//'+appHost+'/oauth/v2/auth_login_status?client_id='+appId, {
-                    credentials: 'include'
+                return fetch(config.api+'/oauth/v2/auth_login_status?client_id='+appId, {
+                    credentials: 'include',
+                    mode: 'cors'
                 }).then(function(response) {
                         var data = response.json();
                         if (response.status >= 200 && response.status < 300) {
@@ -73,7 +72,7 @@ try {
                 }, 500);
 
                 window.addEventListener('message', function (ev) {
-                    if (ev.origin == appOrigin) {
+                    if (ev.origin == config.api) {
                         if (ev.data && ev.data.authResponse && state == ev.data.authResponse.state) {
                             window.removeEventListener('message', this);
                             clearInterval(messageEmitterInterval);
@@ -85,7 +84,7 @@ try {
             };
 
             var apiLogout = function () {
-                return fetch('//'+appHost+'/oauth/v2/auth_logout', {
+                return fetch(config.api+'/oauth/v2/auth_logout', {
                     headers: {
                         'Authorization': "Bearer " + auth.access_token,
                     }
@@ -116,7 +115,7 @@ try {
                     'display=touch',
                     'redirect_uri='+encodeURIComponent(appAuthReturnUrl),
                     'response_type=token',
-                    'scope='+encodeURIComponent(scope ? scope : defaultScope),
+                    'scope='+encodeURIComponent(scope ? scope : config.scope),
                     'state='+state,
                 ];
                 var w=450;
@@ -131,7 +130,7 @@ try {
                 var top = ((height / 2) - (h / 2)) + dualScreenTop;
 
                 var params = 'menubar=no,location=no,resizable=no,scrollbars=no,status=no,width=' + w + ', height=' + h + ', top=' + top + ', left=' + left;
-                loginWindow = window.open("//"+appHost+"/oauth/v2/auth?" + query.join('&'), "Sign In", params)
+                loginWindow = window.open(config.api+"/oauth/v2/auth?" + query.join('&'), "Sign In", params)
                 enableLoginListeners()
             };
 
@@ -164,7 +163,7 @@ try {
                 }
             };
 
-            var xhgmlInit = function (_config) {
+            var xhgmlInit = function () {
 
                 var btns = document.querySelectorAll('[data-hg-login-button]');
 
@@ -180,7 +179,13 @@ try {
             };
 
             var init = function (_config) {
-                config = _config
+                if (_config.api) {
+                    config.api = _config.api
+                }
+                if (_config.scope) {
+                    config.scope = _config.scope
+                }
+
                 xhgmlInit(_config)
 
                 state = Math.round((Math.pow(36, stateLength + 1) - Math.random() * Math.pow(36, stateLength))).toString(36).slice(1);
@@ -199,7 +204,7 @@ try {
             }
 
             var apiGet = function (path, callback) {
-                return fetch('//'+appHost+'/api/'+path, {
+                return fetch(config.api+'/api/'+path, {
                     headers: {
                         'Authorization': "Bearer " + auth.access_token,
                     }
@@ -217,7 +222,7 @@ try {
             }
 
             var apiPut = function (path, data, callback) {
-                return fetch('//'+appHost+'/api/'+path, {
+                return fetch(config.api+'/api/'+path, {
                     method: 'PUT',
                     body: JSON.stringify(data),
                     headers: {
@@ -227,7 +232,7 @@ try {
             };
 
             var apiPost = function (path, data, callback) {
-                return fetch('//'+appHost+'/api/'+path, {
+                return fetch(config.api+'/api/'+path, {
                     method: 'POST',
                     body: JSON.stringify(data),
                     headers: {
