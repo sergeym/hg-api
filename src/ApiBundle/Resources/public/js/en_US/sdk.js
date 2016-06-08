@@ -185,12 +185,15 @@ try {
                 if (_config.scope) {
                     config.scope = _config.scope
                 }
+                if (_config.appId) {
+                    config.appId = _config.appId
+                }
 
-                xhgmlInit(_config)
+                xhgmlInit()
 
                 state = Math.round((Math.pow(36, stateLength + 1) - Math.random() * Math.pow(36, stateLength))).toString(36).slice(1);
 
-                fetchLoginStatus(_config.appId).then(function (response, error) {
+                fetchLoginStatus(config.appId).then(function (response, error) {
                     if (response) {
                         updateAuth(response)
                     }
@@ -204,11 +207,11 @@ try {
             }
 
             var apiGet = function (path, callback) {
-                return fetch(config.api+'/api/'+path, {
-                    headers: {
-                        'Authorization': "Bearer " + auth.access_token,
-                    }
-                }).then(function(response) {
+                var headers = {};
+                if (auth && auth.access_token) {
+                    headers.Authorization = "Bearer " + auth.access_token;
+                }
+                return fetch(config.api+'/api/'+path, {headers:headers}).then(function(response) {
                         var data = response.json();
                         if (response.status >= 200 && response.status < 300) {
                             return Promise.resolve(data).then(callback);
@@ -222,22 +225,26 @@ try {
             }
 
             var apiPut = function (path, data, callback) {
+                var headers = {};
+                if (auth && auth.access_token) {
+                    headers.Authorization = "Bearer " + auth.access_token;
+                }
                 return fetch(config.api+'/api/'+path, {
                     method: 'PUT',
                     body: JSON.stringify(data),
-                    headers: {
-                        'Authorization': "Bearer " + auth.access_token,
-                    }
+                    headers: headers
                 }).then(callback);
             };
 
             var apiPost = function (path, data, callback) {
+                var headers = {};
+                if (auth && auth.access_token) {
+                    headers.Authorization = "Bearer " + auth.access_token;
+                }
                 return fetch(config.api+'/api/'+path, {
                     method: 'POST',
                     body: JSON.stringify(data),
-                    headers: {
-                        'Authorization': "Bearer " + auth.access_token,
-                    }
+                    headers: headers
                 }).then(function(response) {
                         var data = response.json();
                         if (response.status >= 200 && response.status < 500) {
