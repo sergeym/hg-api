@@ -1,0 +1,4 @@
+api_activities_index:
+    path: /
+    methods: GET
+    defaults: { _controller: ApiBundle:Activities:index }
