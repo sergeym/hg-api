@@ -37,11 +37,13 @@
         "datatables/datatables": "^1.10",
         "nelmio/cors-bundle": "^1.4",
         "ide2/telegram-handler": "^2.0",
-        "stof/doctrine-extensions-bundle": "^1.2"
+        "stof/doctrine-extensions-bundle": "^1.2",
+        "creof/doctrine2-spatial": "~1"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
-        "symfony/phpunit-bridge": "^3.0"
+        "symfony/phpunit-bridge": "^3.0",
+        "squizlabs/php_codesniffer": "2.*"
     },
     "scripts": {
         "post-install-cmd": [

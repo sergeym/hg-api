@@ -262,6 +262,22 @@ class User implements UserInterface
     protected $clients;
 
     /**
+     * @var Activity[]
+     * @JMS\Groups({"user-activities"})
+     * @JMS\Type("ArrayCollection<Activity>")
+     * @ORM\ManyToMany(targetEntity="Activity", mappedBy="user")
+     */
+    protected $activities;
+
+    /**
+     * @var Channel[]|ArrayCollection
+     * @JMS\Groups({"user-channels"})
+     * @JMS\Type("ArrayCollection<Channel>")
+     * @ORM\ManyToMany(targetEntity="Channel", mappedBy="users")
+     */
+    protected $channels;
+
+    /**
      * @return int
      */
     public function getId()
