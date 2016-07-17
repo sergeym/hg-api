@@ -18,7 +18,7 @@ class User implements UserInterface
     /**
      * @var integer
      * @JMS\Type("integer")
-     * @JMS\Groups({"user"})
+     * @JMS\Groups({"user", "user-id"})
      * @ORM\Column(name="user_id", type="integer", length=11, options={"unsigned"=true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")

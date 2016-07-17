@@ -106,13 +106,16 @@
 
         window.hgAsyncInit = function() {
             HG.init({
+                {% if app.environment == 'dev'  %}
+                api_url: 'http://hanggliding.dev:8090',
+                {% endif %}
                 appId: '{{ api_appId }}'
             });
 
             HG.getLoginStatus(function(response) {
                 if (response.status == 'connected') {
-                    HG.get('clients', function (apiResponse) {
-                        app.setClientsData(apiResponse)
+                    HG.get('clients').then(function (json) {
+                        app.setClientsData(json)
                     });
                 }
             });

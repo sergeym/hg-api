@@ -44,7 +44,7 @@ class ConvertCommand extends ContainerAwareCommand
         $this->typesToEquipmentType();
         $this->modelsToEquipment();
         $this->flightsToActivities();
-        $this->createChannel('main', 1);
+        $this->createChannel('main', 2);
 
 
         $output->writeln('Completed');
@@ -52,6 +52,7 @@ class ConvertCommand extends ContainerAwareCommand
 
     protected function waypointsToLocations()
     {
+        $this->connection->exec('delete from hg05_xc_activity');
         $this->connection->exec('delete from hg05_xc_location');
         $data = $this->connection->fetchAll('SELECT * FROM hg05_leonardo_waypoints');
         foreach ($data as $waypoint) {
@@ -126,7 +127,7 @@ class ConvertCommand extends ContainerAwareCommand
         $this->connection->exec('delete from hg05_xc_activity');
         $data = $this->connection->fetchAll('SELECT * FROM hg05_leonardo_flights');
         foreach ($data as $flight) {
-//print_r($flight);exit;
+
             $date = (new \DateTime($flight['DATE']))->setTime(0,0,0);
             $equipment = $this->em->getReference(Equipment::class, $flight['glider']);
             $activity = new Activity();
@@ -149,7 +150,6 @@ class ConvertCommand extends ContainerAwareCommand
                 ->setUser($this->em->getReference(User::class, $flight['userID']))
                 ->addEquipment($equipment);
             $this->em->persist($activity);
-
         }
         $metadata = $this->em->getClassMetaData(Activity::class);
         $metadata->setIdGeneratorType(ClassMetadata::GENERATOR_TYPE_NONE);

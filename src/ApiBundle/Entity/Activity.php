@@ -153,7 +153,7 @@ class Activity
 
     /**
      * @var Location
-     * @JMS\Type("Location")
+     * @JMS\Type("ApiBundle\Entity\Location")
      * @JMS\Groups({"activity-first-location"})
      * @ORM\ManyToOne(targetEntity="Location")
      * @ORM\JoinColumn(nullable=true)
@@ -162,7 +162,7 @@ class Activity
 
     /**
      * @var Location
-     * @JMS\Type("Location")
+     * @JMS\Type("ApiBundle\Entity\Location")
      * @JMS\Groups({"activity-last-location"})
      * @ORM\ManyToOne(targetEntity="Location")
      * @ORM\JoinColumn(nullable=true)
@@ -171,9 +171,9 @@ class Activity
 
     /**
      * @var ArrayCollection|Equipment[]
-     * @JMS\Type("ArrayCollection<Equipment>")
-     * @JMS\Groups({"client-private"})
-     * @ORM\ManyToMany(targetEntity="Equipment", mappedBy="activities", fetch="EXTRA_LAZY")
+     * @JMS\Type("ArrayCollection<ApiBundle\Entity\Equipment>")
+     * @JMS\Groups({"activity-equipment"})
+     * @ORM\ManyToMany(targetEntity="Equipment", inversedBy="activities", fetch="EXTRA_LAZY")
      */
     protected $equipment;
 
@@ -553,7 +553,7 @@ class Activity
      */
     public function addEquipment(Equipment $equipment):Activity
     {
-        if ($this->equipment->contains($equipment)) {
+        if (!$this->equipment->contains($equipment)) {
             $this->equipment->add($equipment);
         }
         return $this;

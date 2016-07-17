@@ -24,7 +24,8 @@ trait SerializeTrait {
     protected function paginatedResponse(Paginator $paginator, array $groups = [], Response $response = null):Response
     {
         $response = $this->serializedResponse($paginator->getIterator()->getArrayCopy(), $groups, $response);
-        $response->headers->add(['X-Total-Count' => $paginator->count()]);
+        $response->headers->add(['x-total-count' => $paginator->count()]);
+        $response->headers->add(['width' => $paginator->count()]);
         return $response;
     }
 

@@ -32,7 +32,7 @@ class Brand
 
     /**
      * @var string
-     * @JMS\Type("date")
+     * @JMS\Type("string")
      * @JMS\Groups({"brand"})
      * @ORM\Column(name="name", type="string", nullable=false)
      */
