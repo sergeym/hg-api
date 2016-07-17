@@ -20,7 +20,7 @@ class Equipment
 
     /**
      * @JMS\Type("integer")
-     * @JMS\Groups({"equipment"})
+     * @JMS\Groups({"equipment", "equipment-id"})
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -37,27 +37,36 @@ class Equipment
 
     /**
      * @var EquipmentType
-     * @JMS\Groups({"equipment"})
-     * @JMS\Type("EquipmentType")
+     * @JMS\Groups({"equipment-type"})
+     * @JMS\Type("ApiBundle\Entity\EquipmentType")
      * @ORM\ManyToOne(targetEntity="EquipmentType", inversedBy="equipment", fetch="EXTRA_LAZY")
      */
     protected $type;
 
     /**
      * @var ArrayCollection|Activity[]
-     * @JMS\Groups({"equipment"})
-     * @JMS\Type("ArrayCollecion<Activity>")
-     * @ORM\ManyToMany(targetEntity="Activity", inversedBy="equipment", fetch="EXTRA_LAZY")
+     * @JMS\Groups({"equipment-activity"})
+     * @JMS\Type("ArrayCollection<ApiBundle\Entity\Activity>")
+     * @ORM\ManyToMany(targetEntity="Activity", mappedBy="equipment", fetch="EXTRA_LAZY")
      */
     protected $activities;
 
     /**
      * @var Brand
-     * @JMS\Groups({"equipment"})
-     * @JMS\Type("Brand")
+     * @JMS\Groups({"equipment-brand"})
+     * @JMS\Type("ApiBundle\Entity\Brand")
      * @ORM\ManyToOne(targetEntity="Brand", inversedBy="equipment", fetch="EXTRA_LAZY")
      */
     protected $brand;
+
+    /**
+     * Equipment constructor.
+     */
+    public function __construct()
+    {
+        $this->activities = new ArrayCollection();
+    }
+
 
     /**
      * @return mixed

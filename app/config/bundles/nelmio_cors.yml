@@ -17,6 +17,7 @@ nelmio_cors:
             max_age: 3600
         '^/api/':
             allow_origin: ['*']
-            allow_headers: ['authorization']
+            allow_headers: ['authorization', 'x-client-key']
+            expose_headers: ['x-total-count']
             allow_methods: ['POST', 'PUT', 'GET', 'DELETE']
             max_age: 3600

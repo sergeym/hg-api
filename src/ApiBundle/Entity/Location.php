@@ -39,7 +39,7 @@ class Location
      * @var string
      *
      * @JMS\Groups({"location"})
-     * @JMS\Type("Point")
+     * @JMS\Type("string")
      *
      * @ORM\Column(name="location", type="point", nullable=false)
      */

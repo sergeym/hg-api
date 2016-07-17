@@ -179,8 +179,9 @@ try {
             };
 
             var init = function (_config) {
-                if (_config.api) {
-                    config.api = _config.api
+                if (_config.api_url) {
+                    config.api = _config.api_url
+                    appAuthReturnUrl = config.api + '/oauth/v2/auth_receiver';
                 }
                 if (_config.scope) {
                     config.scope = _config.scope
@@ -206,22 +207,20 @@ try {
                 }
             }
 
-            var apiGet = function (path, callback) {
-                var headers = {};
+            var apiGet = function (path) {
+                var headers = {
+                    'x-client-key': config.appId
+                };
                 if (auth && auth.access_token) {
                     headers.Authorization = "Bearer " + auth.access_token;
                 }
-                return fetch(config.api+'/api/'+path, {headers:headers}).then(function(response) {
-                        var data = response.json();
-                        if (response.status >= 200 && response.status < 300) {
-                            return Promise.resolve(data).then(callback);
-                        } else {
-                            return Promise.reject(new Error(response.statusText))
-                        }
-                    }
-                ).catch(function(err) {
-                    console.error('Fetch Error :-S', err);
-                });
+                return fetch(config.api+'/api/'+path, {headers:headers})
+                    .then(function (response) {
+                        return response.json();
+                    })
+                    .catch(function(err) {
+                        console.error('Fetch Error :-S', err);
+                    });
             }
 
             var apiPut = function (path, data, callback) {
@@ -233,7 +232,13 @@ try {
                     method: 'PUT',
                     body: JSON.stringify(data),
                     headers: headers
-                }).then(callback);
+                })
+                .then(function (response) {
+                    return response.json();
+                })
+                .catch(function(err) {
+                        console.error('Fetch Error :-S', err);
+                });
             };
 
             var apiPost = function (path, data, callback) {
@@ -245,15 +250,12 @@ try {
                     method: 'POST',
                     body: JSON.stringify(data),
                     headers: headers
-                }).then(function(response) {
-                        var data = response.json();
-                        if (response.status >= 200 && response.status < 500) {
-                            return Promise.resolve(data).then(callback);
-                        } else {
-                            return Promise.reject(new Error(response.statusText)).then(callback);
-                        }
-                    }
-                );
+                }).then(function (response) {
+                    return response.json();
+                })
+                .catch(function(err) {
+                    console.error('Fetch Error :-S', err);
+                });
             };
 
             window.HG = {
