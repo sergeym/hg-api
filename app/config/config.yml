@@ -4,6 +4,7 @@ imports:
     - { resource: services.yml }
     - { resource: assetic.yml }
     - { resource: bundles/nelmio_cors.yml }
+    - { resource: bundles/rs_queue.yml }
     - { resource: "@ApiBundle/Resources/config/services.yml" }
     - { resource: "@FOSOAuthServerBundle/Resources/config/security.xml" }
     - { resource: "@CorsBundle/Resources/config/services.yml" }
@@ -120,6 +121,14 @@ fos_oauth_server:
         user_provider: api.user_manager
         options:
             supported_scopes: profile xc tracking
+monolog:
+    channels: [notification]
+    handlers:
+        telegram:
+            type: service
+            level: info
+            id: monolog_notification_handler
+            channels: [notification]
 
 services:
     monolog_handler_telegram:
@@ -128,3 +137,10 @@ services:
             - "%telegram.bot%"
             - "%telegram.chat_id%"
             - "400" #Monolog\Logger::ERROR
+
+    monolog_notification_handler:
+        class: TelegramHandler\TelegramHandler
+        arguments:
+            - "%telegram.bot%"
+            - "%telegram.chat_id%"
+            - "200" #Monolog\Logger::INFO
