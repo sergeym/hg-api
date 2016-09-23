@@ -24,6 +24,7 @@ class AppKernel extends Kernel
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Nelmio\CorsBundle\NelmioCorsBundle(),
             new CorsBundle\CorsBundle(),
+            new Mmoreram\RSQueueBundle\RSQueueBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

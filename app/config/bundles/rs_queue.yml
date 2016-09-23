@@ -1,0 +1,19 @@
+services:
+    api.queue.task.serialazer:
+        class: ApiBundle\Serializer\QueueTaskSerializer
+
+rs_queue:
+
+    # Queues definition
+    queues:
+        activity: "queues:activity"
+
+    # Serializer definition
+    serializer: ApiBundle\Serializer\QueueTaskSerializer
+
+    # Server configuration. By default, these values
+    server:
+        redis:
+            host: 127.0.0.1
+            port: 6379
+            database: ~
